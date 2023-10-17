@@ -13,6 +13,11 @@ Host {{ bastion_ip }}
   ControlMaster auto
   ControlPath ~/.ssh/ansible-%r@%h:%p
   ControlPersist 5m
+  User {{ real_user }}
+  {% if ansible_ssh_private_key_file is defined %}IdentityFile {{ ansible_ssh_private_key_file }}{% endif %}
 
 Host {{ vars['hosts'] }}
   ProxyCommand ssh -F /dev/null -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -W %h:%p -p {{ bastion_port }} {{ real_user }}@{{ bastion_ip }} {% if ansible_ssh_private_key_file is defined %}-i {{ ansible_ssh_private_key_file }}{% endif %}
+
+  User {{ real_user }}
+  {% if ansible_ssh_private_key_file is defined %}IdentityFile {{ ansible_ssh_private_key_file }}{% endif %}

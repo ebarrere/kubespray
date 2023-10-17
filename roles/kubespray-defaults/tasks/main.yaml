@@ -10,6 +10,7 @@
   import_tasks: fallback_ips.yml
   when:
     - "'bootstrap-os' not in ansible_play_role_names"
+    - "'bastion-ssh-config' not in ansible_play_role_names"
     - fallback_ips is not defined
   tags:
     - always

@@ -20,3 +20,16 @@
     src: "{{ ssh_bastion_confing__name }}.j2"
     dest: "{{ playbook_dir }}/{{ ssh_bastion_confing__name }}"
     mode: 0640
+
+- name: Prompt to edit ansible.cfg
+  pause:
+    seconds: 3
+    prompt: "{{ msg }}"
+  vars:
+    msg: |
+
+      If you intend to use the bastion server to enable ansible, you must add the following to "ssh_args" in your ansible.cfg:
+
+      -F {{ playbook_dir }}/{{ ssh_bastion_confing__name }}, e.g.
+
+      ssh_args = -F {{ playbook_dir }}/{{ ssh_bastion_confing__name }} -o ControlMaster=auto -o ControlPersist=30m -o ConnectionAttempts=100 -o UserKnownHostsFile=/dev/null

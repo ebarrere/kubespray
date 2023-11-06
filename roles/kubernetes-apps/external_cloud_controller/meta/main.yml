@@ -1,5 +1,15 @@
 ---
 dependencies:
+  - role: kubernetes-apps/external_cloud_controller/aws
+    when:
+      - cloud_provider is defined
+      - cloud_provider == "external"
+      - external_cloud_provider is defined
+      - external_cloud_provider == "aws"
+      - inventory_hostname == groups['kube_control_plane'][0]
+    tags:
+      - external-cloud-controller
+      - external-aws
   - role: kubernetes-apps/external_cloud_controller/openstack
     when:
       - cloud_provider is defined

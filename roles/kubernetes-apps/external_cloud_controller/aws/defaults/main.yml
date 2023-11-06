@@ -1,0 +1,9 @@
+---
+## A dictionary of extra arguments to add to the aws cloud controller manager daemonset
+## Format:
+##  external_aws_cloud_controller_extra_args:
+##    arg1: "value1"
+##    arg2: "value2"
+external_aws_cloud_controller_extra_args: {}
+external_aws_cloud_controller_image_tag: "v1.27.1"
+external_aws_cloud_controller_cluster_cidr: 172.17.0.0/16

@@ -1,0 +1,26 @@
+---
+- name: External AWS Cloud Controller | Generate Manifests
+  template:
+    src: "{{ item.file }}.j2"
+    dest: "{{ kube_config_dir }}/{{ item.file }}"
+    group: "{{ kube_cert_group }}"
+    mode: 0640
+  with_items:
+    - {name: external-aws-cloud-controller-manager-ds, file: external-aws-cloud-controller-manager-ds.yml}
+  register: external_aws_manifests
+  when: inventory_hostname == groups['kube_control_plane'][0]
+  tags: external-aws
+
+- name: External AWS Cloud Controller | Apply Manifests
+  kube:
+    kubectl: "{{ bin_dir }}/kubectl"
+    filename: "{{ kube_config_dir }}/{{ item.item.file }}"
+    state: "latest"
+  with_items:
+    - "{{ external_aws_manifests.results }}"
+  when:
+    - inventory_hostname == groups['kube_control_plane'][0]
+    - not item is skipped
+  loop_control:
+    label: "{{ item.item.file }}"
+  tags: external-aws
